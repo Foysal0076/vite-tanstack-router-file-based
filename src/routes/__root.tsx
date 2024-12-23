@@ -36,6 +36,17 @@ const Layout = () => (
       <li>
         <Link to='/pokemon'>Pokemons</Link>
       </li>
+      <li>
+        <Link
+          to='/search'
+          search={{
+            query: 'shoes',
+            categories: ['electronics', 'clothing'],
+            hasDiscount: false,
+          }}>
+          Search
+        </Link>
+      </li>
     </ul>
     <Outlet />
   </div>
