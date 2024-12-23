@@ -25,6 +25,17 @@ const Layout = () => (
           Profile
         </Link>
       </li>
+      <li>
+        <Link
+          to='/pokemon/$id'
+          params={{ id: '1' }}
+          search={(prev) => ({ ...prev, foo: 'bar' })}>
+          Pokemon/$id
+        </Link>
+      </li>
+      <li>
+        <Link to='/pokemon'>Pokemons</Link>
+      </li>
     </ul>
     <Outlet />
   </div>
