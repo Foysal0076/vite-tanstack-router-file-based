@@ -19,7 +19,9 @@ import { Route as IndexImport } from './routes/index'
 import { Route as PokemonIndexImport } from './routes/pokemon/index'
 import { Route as PokemonIdImport } from './routes/pokemon/$id'
 import { Route as AuthenticatedSettingsImport } from './routes/_authenticated/settings'
+import { Route as AuthenticatedPaymentImport } from './routes/_authenticated.payment'
 import { Route as AuthenticatedDashboardImport } from './routes/_authenticated/dashboard'
+import { Route as FooBarBazImport } from './routes/foo.bar.baz'
 
 // Create/Update Routes
 
@@ -70,10 +72,22 @@ const AuthenticatedSettingsRoute = AuthenticatedSettingsImport.update({
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 
+const AuthenticatedPaymentRoute = AuthenticatedPaymentImport.update({
+  id: '/payment',
+  path: '/payment',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+
 const AuthenticatedDashboardRoute = AuthenticatedDashboardImport.update({
   id: '/dashboard',
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRoute,
+} as any)
+
+const FooBarBazRoute = FooBarBazImport.update({
+  id: '/foo/bar/baz',
+  path: '/foo/bar/baz',
+  getParentRoute: () => rootRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -122,6 +136,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardImport
       parentRoute: typeof AuthenticatedImport
     }
+    '/_authenticated/payment': {
+      id: '/_authenticated/payment'
+      path: '/payment'
+      fullPath: '/payment'
+      preLoaderRoute: typeof AuthenticatedPaymentImport
+      parentRoute: typeof AuthenticatedImport
+    }
     '/_authenticated/settings': {
       id: '/_authenticated/settings'
       path: '/settings'
@@ -143,6 +164,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PokemonIndexImport
       parentRoute: typeof rootRoute
     }
+    '/foo/bar/baz': {
+      id: '/foo/bar/baz'
+      path: '/foo/bar/baz'
+      fullPath: '/foo/bar/baz'
+      preLoaderRoute: typeof FooBarBazImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -150,11 +178,13 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedPaymentRoute: typeof AuthenticatedPaymentRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedPaymentRoute: AuthenticatedPaymentRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
 }
 
@@ -169,9 +199,11 @@ export interface FileRoutesByFullPath {
   '/profile': typeof ProfileRoute
   '/search': typeof SearchRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/payment': typeof AuthenticatedPaymentRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/pokemon/$id': typeof PokemonIdRoute
   '/pokemon': typeof PokemonIndexRoute
+  '/foo/bar/baz': typeof FooBarBazRoute
 }
 
 export interface FileRoutesByTo {
@@ -181,9 +213,11 @@ export interface FileRoutesByTo {
   '/profile': typeof ProfileRoute
   '/search': typeof SearchRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/payment': typeof AuthenticatedPaymentRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/pokemon/$id': typeof PokemonIdRoute
   '/pokemon': typeof PokemonIndexRoute
+  '/foo/bar/baz': typeof FooBarBazRoute
 }
 
 export interface FileRoutesById {
@@ -194,9 +228,11 @@ export interface FileRoutesById {
   '/profile': typeof ProfileRoute
   '/search': typeof SearchRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/payment': typeof AuthenticatedPaymentRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/pokemon/$id': typeof PokemonIdRoute
   '/pokemon/': typeof PokemonIndexRoute
+  '/foo/bar/baz': typeof FooBarBazRoute
 }
 
 export interface FileRouteTypes {
@@ -208,9 +244,11 @@ export interface FileRouteTypes {
     | '/profile'
     | '/search'
     | '/dashboard'
+    | '/payment'
     | '/settings'
     | '/pokemon/$id'
     | '/pokemon'
+    | '/foo/bar/baz'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -219,9 +257,11 @@ export interface FileRouteTypes {
     | '/profile'
     | '/search'
     | '/dashboard'
+    | '/payment'
     | '/settings'
     | '/pokemon/$id'
     | '/pokemon'
+    | '/foo/bar/baz'
   id:
     | '__root__'
     | '/'
@@ -230,9 +270,11 @@ export interface FileRouteTypes {
     | '/profile'
     | '/search'
     | '/_authenticated/dashboard'
+    | '/_authenticated/payment'
     | '/_authenticated/settings'
     | '/pokemon/$id'
     | '/pokemon/'
+    | '/foo/bar/baz'
   fileRoutesById: FileRoutesById
 }
 
@@ -244,6 +286,7 @@ export interface RootRouteChildren {
   SearchRoute: typeof SearchRoute
   PokemonIdRoute: typeof PokemonIdRoute
   PokemonIndexRoute: typeof PokemonIndexRoute
+  FooBarBazRoute: typeof FooBarBazRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -254,6 +297,7 @@ const rootRouteChildren: RootRouteChildren = {
   SearchRoute: SearchRoute,
   PokemonIdRoute: PokemonIdRoute,
   PokemonIndexRoute: PokemonIndexRoute,
+  FooBarBazRoute: FooBarBazRoute,
 }
 
 export const routeTree = rootRoute
@@ -272,7 +316,8 @@ export const routeTree = rootRoute
         "/profile",
         "/search",
         "/pokemon/$id",
-        "/pokemon/"
+        "/pokemon/",
+        "/foo/bar/baz"
       ]
     },
     "/": {
@@ -282,6 +327,7 @@ export const routeTree = rootRoute
       "filePath": "_authenticated.tsx",
       "children": [
         "/_authenticated/dashboard",
+        "/_authenticated/payment",
         "/_authenticated/settings"
       ]
     },
@@ -298,6 +344,10 @@ export const routeTree = rootRoute
       "filePath": "_authenticated/dashboard.tsx",
       "parent": "/_authenticated"
     },
+    "/_authenticated/payment": {
+      "filePath": "_authenticated.payment.tsx",
+      "parent": "/_authenticated"
+    },
     "/_authenticated/settings": {
       "filePath": "_authenticated/settings.tsx",
       "parent": "/_authenticated"
@@ -307,6 +357,9 @@ export const routeTree = rootRoute
     },
     "/pokemon/": {
       "filePath": "pokemon/index.tsx"
+    },
+    "/foo/bar/baz": {
+      "filePath": "foo.bar.baz.tsx"
     }
   }
 }

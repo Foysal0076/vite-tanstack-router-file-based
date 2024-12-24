@@ -77,6 +77,16 @@ const Layout = () => {
             Settings
           </Link>
         </li>
+        <li>
+          <Link to='/payment' activeProps={activeProps}>
+            Payment
+          </Link>
+        </li>
+        <li>
+          <Link to='/foo/bar/baz' activeProps={activeProps}>
+            Nested Route with dot(.) in the file name: foo/bar/baz
+          </Link>
+        </li>
         <button onClick={signOut}>Logout</button>
       </ul>
       <Outlet />
